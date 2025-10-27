@@ -1,8 +1,9 @@
 import pandas as pd
 from tqdm import tqdm
+import snakemake
 
-single_series = pd.read_csv("results/single_series.csv")
-super_series = pd.read_csv("results/superseries.csv")
+single_series = pd.read_csv(snakemake.input[0])
+super_series = pd.read_csv(snakemake.input[1])
 
 def remove_chars(input_string):
     """
@@ -54,7 +55,7 @@ def extract_singleseries(df, gse_id):
     res = series_of_interest["summary"].str.contains("SuperSeries").bool()
     return series_of_interest["title"].to_list()[0], series_of_interest["summary"].to_list()[0], series_of_interest["overall_design"].to_list()[0], series_of_interest["pubmed_id"].to_list()[0]
 
-df_for_annotation = pd.read_csv("results/arch_geo_superseries.csv")
+df_for_annotation = pd.read_csv(snakemake.input[2])
 df_len = df_for_annotation.shape[0]
 ## these ones do not have series and cannot be retreived programmatically using GEOparse
 
@@ -94,7 +95,7 @@ for i in tqdm(range(df_len)):
 
 superseries_added = pd.DataFrame(to_create)
 superseries_added.columns = ["title", "summary", "overall_design", "pmid"]
-pd.concat([df_for_annotation, superseries_added], axis = 1).to_csv("results/full_superseries_with_pmid.csv")
+pd.concat([df_for_annotation, superseries_added], axis = 1).to_csv(snakemake.output[1])
 
 df_for_annotation = pd.read_csv("results/arch_geo_nosuperseries.csv")
 df_len = df_for_annotation.shape[0]
@@ -114,4 +115,4 @@ for i in tqdm(range(df_len)):
 nosuperseries_added = pd.DataFrame(to_create)
 nosuperseries_added.columns = ["title", "summary", "overall_design", "pmid"]
 
-pd.concat([df_for_annotation, nosuperseries_added], axis = 1).to_csv("results/full_nosuperseries_with_pmid.csv")
+pd.concat([df_for_annotation, nosuperseries_added], axis = 1).to_csv(snakemake.output[0])
