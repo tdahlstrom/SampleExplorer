@@ -142,11 +142,14 @@ rule create_gene_index:
 
 rule create_transcriptomic_db:
     input:
-        f"{TMP_FILE_PATH}/results/matrix_v2.pkl",
         f"{TMP_FILE_PATH}/results/transcription_index_v2.pkl",
         f"{TMP_FILE_PATH}/results/study_counts.dat",
         f"{TMP_FILE_PATH}/results/genes_v2.p"
+    params:
+        rows = {ROWS}
+        cols = {COLS}
     output:
+        f"{TMP_FILE_PATH}/results/transcription_embedding_matrix_v2.pkl"
         f"{FINAL_FILES}/results/transcriptomic_db.h5ad"
     script:
         "scripts/create_transcriptomic_db.py"
