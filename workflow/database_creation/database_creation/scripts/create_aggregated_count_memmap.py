@@ -25,7 +25,7 @@ memmap_filename = snakemake.output[0]
 memmap_matrix = np.memmap(memmap_filename, dtype='float16', mode='w+', shape=(rows, cols))
 
 # Number of rows to add
-num_rows_to_add = snakemake.params.rows
+num_rows_to_add = snakemake.params.num_rows
 
 # Sequentially add random rows
 for i in tqdm(range(num_rows_to_add), desc="Adding Rows", unit="row"):
