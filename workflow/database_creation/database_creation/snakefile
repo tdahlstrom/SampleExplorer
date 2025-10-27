@@ -43,6 +43,8 @@ rule download_super_series_from_geo:
     input:
         f"{TMP_FILE_PATH}/results/superseries_ids_only.csv"
     output:
+        f"{TMP_FILE_PATH}/superseries"
+        f"{TMP_FILE_PATH}"
         f"{TMP_FILE_PATH}/superseries/metadata_final.p"
     script:
         "scripts/super_series_geo_download.py"
