@@ -3,8 +3,9 @@ from tqdm import tqdm
 import time
 import os
 from GEOparse import GEOparse
+import snakemake
 
-df_melted = pd.read_csv("results/superseries_id_only.csv")
+df_melted = pd.read_csv(snakemake.input[0])
 
 list_of_accessions = df_melted["value"]
 #reversed_series = your_series[::-1].head(2000)
@@ -14,7 +15,7 @@ dict_to_df = {}
 # Set the save interval
 save_interval = 100
 
-save_folder = "superseries"  # Replace "destination_folder" with the desired folder path
+save_folder = snakemake.output[0]  # Replace "destination_folder" with the desired folder path
 
 # Create the folder if it doesn't exist
 if not os.path.exists(save_folder):
@@ -24,7 +25,7 @@ dict_to_df = {}  # Initialize an empty dictionary
 
 for idx, i in enumerate(tqdm(list_of_accessions)):
     try:
-        gse = GEOparse.get_GEO(geo=i, destdir="./", include_data=False, silent=True)
+        gse = GEOparse.get_GEO(geo=i, destdir=snakemake.output[1], include_data=False, silent=True)
         time.sleep(3)
         file_to_remove = i + "_family.soft.gz"
         dict_to_df[i] = gse.metadata
@@ -51,6 +52,6 @@ for idx, i in enumerate(tqdm(list_of_accessions)):
 # Save the final DataFrame if there are remaining entries in the dictionary
 if dict_to_df:
     final_df = pd.DataFrame(dict_to_df)
-    final_df.to_pickle(os.path.join(save_folder, "metadata_final.p"))
+    final_df.to_pickle(snakemake.output[2])
     
     
