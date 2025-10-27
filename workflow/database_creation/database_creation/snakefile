@@ -6,6 +6,10 @@ ARCHS4_LOCAL_PATH = "/path/to/archs4"   # <-- set to folder that contains human_
 ARCHS4_FILENAME = f"human_gene_v{ARCHS4_VERSION}.h5"
 ARCHS4_FILE = f"{ARCHS4_LOCAL_PATH}/{ARCHS4_FILENAME}"
 
+# Configure size of ARCHS4 database
+ROWS = 287553
+COLS = 67186
+
 # Configure location for the database creation workflow to store temporary files
 TMP_FILE_PATH = "/path/to/tmp_folder"
 
@@ -107,6 +111,10 @@ rule create_semantic_h5ad:
 rule create_aggregated_count_memmap:
     input:
         f"{ARCHS4_FILE}"
+    params:
+        rows = {ROWS}
+        cols = {COLS}
+        num_rows = {ROWS}
     output:
         f"{TMP_FILE_PATH}/results/study_counts.dat",
         f"{TMP_FILE_PATH}/results/transcription_index_v2.pkl"
