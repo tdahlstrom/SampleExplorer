@@ -2,7 +2,7 @@
 ARCHS4_VERSION = "2.latest"
 ARCHS4_LOCAL_PATH = "/path/to/archs4"   # <-- set to folder that contains human_gene_v2.latest.h5
 
-# Generally, filename and file should remain untouched
+# Generally, ARCHS4_FILENAME and ARCHS4_FILE should remain untouched
 ARCHS4_FILENAME = f"human_gene_v{ARCHS4_VERSION}.h5"
 ARCHS4_FILE = f"{ARCHS4_LOCAL_PATH}/{ARCHS4_FILENAME}"
 
