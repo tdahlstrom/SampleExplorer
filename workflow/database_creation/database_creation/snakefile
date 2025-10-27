@@ -124,6 +124,9 @@ rule create_aggregated_count_memmap:
 rule jl_transform_count_matrix:
     input:
         f"{TMP_FILE_PATH}/results/study_counts.dat"
+    params:
+        rows = {ROWS}
+        cols = {COLS}
     output:
         f"{TMP_FILE_PATH}/results/matrix_v2.pkl"
     script:
