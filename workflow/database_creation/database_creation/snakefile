@@ -59,7 +59,8 @@ rule combine_single_series:
 
 rule combine_super_series:
     input:
-        f"{TMP_FILE_PATH}/superseries/metadata_final.p"
+        f"{TMP_FILE_PATH}/superseries"
+        f"{TMP_FILE_PATH}/results/superseries_ids_only.csv"
     output:
         f"{TMP_FILE_PATH}/results/superseries.csv"
     script:
