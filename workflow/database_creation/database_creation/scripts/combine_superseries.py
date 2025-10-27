@@ -6,9 +6,10 @@ import time
 import os
 from GEOparse import GEOparse
 import signal
+import snakemake
 
 # Specify the folder path containing the Pickled files
-folder_path = 'superseries'
+folder_path = snakemake.input[0]
 
 # List all files in the folder with a .pkl extension
 pickle_files = [file for file in os.listdir(folder_path) if file.endswith('.p')]
@@ -32,8 +33,8 @@ merged = pd.concat(merged_df)
 
 currently_downloaded = merged.index.unique()
 
-series_id = pd.read_csv("results/superseries_id_only.csv")["value"]
+series_id = pd.read_csv(snakemake.input[1])["value"]
 
 list_of_accessions = series_id[~series_id.isin(currently_downloaded)] # 84 studies not represented due to download errors
 
-merged.to_csv("results/superseries.csv")
+merged.to_csv(snakemake.output[0])
