@@ -1,12 +1,13 @@
 import archs4py as a4
 import numpy as np
 from tqdm import tqdm
+import snakemake
 
-file = "human_gene_v2.2.h5"
+file = snakemake.input[0]
 
 meta_meta = a4.meta.meta(file, ".*", meta_fields=["series_id", "characteristics_ch1"])
 df_no_duplicates = meta_meta.drop_duplicates()
-df_no_duplicates.to_pickle("results/transcription_index_v2.pkl")
+df_no_duplicates.to_pickle(snakemake.output[1])
 list_of_tuples = df_no_duplicates.apply(tuple, axis=1).tolist()
 
 def get_average_counts(series_id, characteristics):
@@ -16,15 +17,15 @@ def get_average_counts(series_id, characteristics):
     av_counts = sample_counts.mean(1).values
     return av_counts
 
-rows = 287553
-cols = 67186
+rows = snakemake.params.rows
+cols = snakemake.params.cols
 
 # Create a memmap array
-memmap_filename = "data/study_counts.dat"
+memmap_filename = snakemake.output[0]
 memmap_matrix = np.memmap(memmap_filename, dtype='float16', mode='w+', shape=(rows, cols))
 
 # Number of rows to add
-num_rows_to_add = 287553
+num_rows_to_add = snakemake.params.rows
 
 # Sequentially add random rows
 for i in tqdm(range(num_rows_to_add), desc="Adding Rows", unit="row"):
