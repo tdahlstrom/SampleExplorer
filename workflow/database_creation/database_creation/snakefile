@@ -51,7 +51,7 @@ rule download_super_series_from_geo:
 
 rule combine_single_series:
     input:
-        f"{TMP_FILE_PATH}/single_series/metadata_final.p"
+        f"{TMP_FILE_PATH}/single_series"
     output:
         f"{TMP_FILE_PATH}/results/single_series.csv"
     script:
