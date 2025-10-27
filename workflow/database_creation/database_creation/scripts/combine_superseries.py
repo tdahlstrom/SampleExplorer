@@ -1,9 +1,7 @@
 import os
 import pandas as pd
-import pandas as pd
 from tqdm import tqdm
 import time
-import os
 from GEOparse import GEOparse
 import signal
 import snakemake
