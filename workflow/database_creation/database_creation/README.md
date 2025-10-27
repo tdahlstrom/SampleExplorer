@@ -7,7 +7,7 @@ This repository contains the snakemake workflow for generating the embedding dat
 
 BioRAG requires two vector databases to conduct retrival of relevant studies. The snakemake workflow details the creation of these databases from human RNAseq data in the ARCHS4 hdf5 files.
 
-### Software requirements.
+### Software requirements
 
 The following packages are required:
 1. archs4py - to retrieve data from hdf5 ARCHS4 files
@@ -17,6 +17,9 @@ The following packages are required:
 4. numpy - for persistence of transformed, memory-mapped count data
 5. pandas - for data preproceesing of GEO metadata
 6. snakemakem - for worfklow construction.
+
+### Global variables in snakefile
+Several global variables in the snakefile determine the location where various files are created and used during the workflow.  The ARCHS4 version should be updated, and the size of the ARCHS4 should reflect the currently used version.
 
 ### Running the workflow
 
