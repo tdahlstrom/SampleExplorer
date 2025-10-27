@@ -3,15 +3,16 @@ from tqdm import tqdm
 import time
 import os
 from GEOparse import GEOparse
+import snakemake
 
 save_interval = 100  # Set the save interval
 
-df_melted = pd.read_csv("results/no_superseries_ids_only.csv")
+df_melted = pd.read_csv(snakemake.input[0])
 
 list_of_accessions = df_melted["gse_id"]
 dict_to_df = {}
 
-save_folder = "single_series"
+save_folder = snakemake.output[0]
 # Create the folder if it doesn't exist
 if not os.path.exists(save_folder):
     os.makedirs(save_folder)
@@ -21,7 +22,7 @@ dict_to_df = {}  # Initialize an empty dictionary
 
 for idx, i in enumerate(tqdm(list_of_accessions)):
     try:
-        gse = GEOparse.get_GEO(geo=i, destdir="./", include_data=False, silent=True)
+        gse = GEOparse.get_GEO(geo=i, destdir=snakemake.output[1], include_data=False, silent=True)
         time.sleep(3)
         file_to_remove = i + "_family.soft.gz"
         dict_to_df[i] = gse.metadata
@@ -48,4 +49,4 @@ for idx, i in enumerate(tqdm(list_of_accessions)):
 # Save the final DataFrame if there are remaining entries in the dictionary
 if dict_to_df:
     final_df = pd.DataFrame(dict_to_df)
-    final_df.to_pickle(os.path.join(save_folder, "metadata_final.p"))
+    final_df.to_pickle(snakemake.output[2])
