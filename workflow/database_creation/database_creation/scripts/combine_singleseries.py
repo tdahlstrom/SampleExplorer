@@ -1,8 +1,9 @@
 import os
 import pandas as pd
+import snakemake
 
 # Specify the folder path containing the Pickled files
-folder_path = 'single_series'
+folder_path = snakemake.input[0]
 
 # List all files in the folder with a .pkl extension
 pickle_files = [file for file in os.listdir(folder_path) if file.endswith('.p')]
@@ -21,4 +22,4 @@ for file in pickle_files:
 
 merged = pd.concat(merged_df)
 
-merged.to_csv("results/single_series.csv")
+merged.to_csv(snakemake.output[0])
