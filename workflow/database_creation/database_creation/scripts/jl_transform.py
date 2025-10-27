@@ -1,11 +1,12 @@
 import numpy as np
 from sklearn import random_projection
 import pickle
+import snakemake
 
-memmap_filename = "results/study_counts.dat"
+memmap_filename = snakemake.input[0]
 
-rows = 287553
-cols = 67186
+rows = snakemake.params.rows
+cols = snakemake.params.cols
 
 # Reload the memmap file in read-only mode
 reloaded_memmap_matrix = np.memmap(memmap_filename, dtype='float16', mode='r', shape=(rows, cols))
@@ -18,7 +19,7 @@ transformer = random_projection.GaussianRandomProjection(n_components=1000)
 X_new = transformer.fit_transform(reloaded_memmap_matrix)
 X_new.shape
 
-pickle_file_path = "results/matrix_v2.pkl"
+pickle_file_path = snakemake.output[1]
 
 # Save the NumPy matrix using pickle
 with open(pickle_file_path, 'wb') as file:
